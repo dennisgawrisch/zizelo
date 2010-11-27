@@ -1,7 +1,8 @@
 <?php
 class Zizelo_Facade {
-    const RELEVANCE_TEXT = 1.0;
-    const RELEVANCE_HASH = 0.5;
+    const RELEVANCE_TEXT    = 1.0;
+    const RELEVANCE_HASH    = 0.5;
+    const RELEVANCE_MINIMAL = 0.17;
 
     private static $default_storage;
     private static $default_analyzer;
@@ -108,12 +109,16 @@ class Zizelo_Facade {
             return array();
         }
 
-        $perfect_match_relevance = count($words) * (self::RELEVANCE_TEXT + self::RELEVANCE_HASH);
+        $matches = array();
+
+        $perfect_match_relevance = self::RELEVANCE_TEXT + self::RELEVANCE_HASH;
         $perfect_match_ids = array();
 
         foreach ($documents as $document_id => $document) {
-            $relevance = $document["text"] * self::RELEVANCE_TEXT + $document["hash"] * self::RELEVANCE_HASH;
-            $documents[$document_id] = $relevance; // replace for sorting
+            $relevance = ($document["text"] * self::RELEVANCE_TEXT + $document["hash"] * self::RELEVANCE_HASH) / count($words);
+            if ($relevance >= self::RELEVANCE_MINIMAL) {
+                $matches[$document_id] = $relevance;
+            }
             if ($relevance >= $perfect_match_relevance) {
                 $perfect_match_ids []= $document_id;
             }
@@ -122,8 +127,8 @@ class Zizelo_Facade {
         if (1 == count($perfect_match_ids)) {
             return $perfect_match_ids;
         } else {
-            asort($documents, SORT_NUMERIC);
-            return array_keys($documents);
+            arsort($matches, SORT_NUMERIC);
+            return array_keys($matches);
         }
     }
 
