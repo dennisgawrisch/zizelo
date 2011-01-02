@@ -27,8 +27,8 @@ foreach (get_class_methods($test) as $method) {
     if (substr($method, 0, 4) == "test") {
         try {
             $test->$method();
-        } catch (Zizelo_Test_Exception $e) {
-            print "$method failed" . PHP_EOL;
+        } catch (Zizelo_Test_Exception $exception) {
+            print $method . " failed: " . $exception->getMessage() . PHP_EOL;
         }
     }
 }
