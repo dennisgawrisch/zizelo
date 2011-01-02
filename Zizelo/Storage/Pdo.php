@@ -90,7 +90,7 @@ class Zizelo_Storage_Pdo implements Zizelo_Storage_Interface {
         $document_surrogate_id = $this->getConnection()->lastInsertId();
 
         foreach ($words as $word) {
-            $query = $this->sqlQuery("SELECT `id` FROM `zizelo_words` WHERE `text` = :text AND `hash` = :hash", $word);
+            $query = $this->sqlQuery("SELECT `id` FROM `zizelo_words` WHERE `text` = :text", $word);
             $word_id = NULL;
             foreach ($query as $row) {
                 $word_id = $row[0];
@@ -104,6 +104,40 @@ class Zizelo_Storage_Pdo implements Zizelo_Storage_Interface {
                 "INSERT INTO `zizelo_words_appearance`(`document_id`, `word_id`) VALUES(:document_id, :word_id)",
                 array("document_id" => $document_surrogate_id, "word_id" => $word_id)
             );
+        }
+
+        return $this;
+    }
+
+    public function calculateWordsFrequency(array &$words) {
+        foreach ($this->sqlQuery("SELECT COUNT(*) AS `total` FROM `zizelo_words_appearance`") as $row) {
+            $total_words_count = $row["total"];
+        }
+
+        $texts = array();
+        foreach ($words as $word) {
+            $texts []= $this->getConnection()->quote($word["text"]);
+        }
+        $texts = "(" . implode(", ", $texts) . ")";
+
+        foreach ($this->sqlQuery("
+            SELECT `text`, COUNT(`document_id`) AS `frequency`
+            FROM `zizelo_words`, `zizelo_words_appearance`
+            WHERE `zizelo_words`.`id` = `word_id`
+            AND `text` IN $texts
+            GROUP BY `word_id`
+        ") as $row) {
+            foreach ($words as &$word) {
+                if ($word["text"] == $row["text"]) {
+                    $word["frequency"] = $row["frequency"] / $total_words_count;
+                }
+            }
+        }
+
+        foreach ($words as &$word) {
+            if (!isset($word["frequency"])) {
+                $word["frequency"] = 0;
+            }
         }
 
         return $this;
