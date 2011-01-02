@@ -19,7 +19,7 @@ class Zizelo_Test {
         $pdo->exec(file_get_contents(dirname(__FILE__) . "/../sql/create-tables.sqlite.sql"));
         Zizelo_Facade::setDefaultStorage(new Zizelo_Storage_Pdo($pdo));
 
-        $this->index = Zizelo_Facade::getIndex("books");
+        $this->index = Zizelo_Facade::getIndex("things");
 
         $this->index->addDocument(1, "About a Silence in Literature");
         $this->index->addDocument(2, "A Feast for the Seaweeds");
@@ -113,6 +113,7 @@ class Zizelo_Test {
         $this->index->addDocument(90, "Zhuan Falun");
         $this->index->addDocument(91, "Aaaa");
         $this->index->addDocument(92, "Oooo");
+        $this->index->addDocument(93, "Ryunosuke Akutagawa");
     }
 
     public function tearDown() {
@@ -171,6 +172,16 @@ class Zizelo_Test {
         $matches = $this->index->search("oooo");
         $this->assert(!in_array(91, $matches));
         $this->assert(in_array(92, $matches));
+    }
+
+    public function testLatinDiacritics() {
+        $matches = $this->index->search("senor");
+        $this->assert(array(26) == $matches);
+    }
+
+    public function testLetterU() {
+        $matches = $this->index->search("ryunoske");
+        $this->assert(array(93) == $matches);
     }
 }
 
