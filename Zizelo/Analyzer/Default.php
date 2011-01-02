@@ -18,7 +18,7 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
         // TODO Latin diacritics
     );
     protected $similar_letters = array(
-        "q" => "k", "w" => "v", "y" => "i", "u" => "v", "j" => "i", "z" => "s", "x" => "ks", "c" => "k",
+        "w" => "v", "u" => "v", "y" => "i", "j" => "i", "z" => "s", "x" => "ks", "c" => "k", "q" => "k",
     );
     protected $meaningless_for_hash = "/[euioah]/";
 
