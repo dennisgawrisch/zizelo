@@ -62,12 +62,16 @@ class Zizelo_Facade {
     /**
      * Add a new document to the index.
      * @param integer $id
-     * @param string $text
+     * @param string|array $text
      * @return Zizelo_Facade
      * @throw Zizelo_Exception on empty document (no word can be extracted)
      * @throw Zizelo_Exception if document already exists
      */
     public function addDocument($id, $text) {
+        if (is_array($text)) {
+            $text = implode(" ", $text);
+        }
+
         $words = $this->getAnalyzer()->extractWords($text);
         if (empty($words)) {
             throw new Zizelo_Exception("No word can be extracted from this document, it seems empty");
