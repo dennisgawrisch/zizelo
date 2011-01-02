@@ -11,16 +11,8 @@ function __autoload($class_name) {
     require_once str_replace("_", DIRECTORY_SEPARATOR, $class_name) . ".php";
 }
 
-class Zizelo_Test {
-    protected $index;
-
+class Zizelo_Test_Basic extends Zizelo_Test {
     public function setUp() {
-        $pdo = new PDO("sqlite::memory:");
-        $pdo->exec(file_get_contents(dirname(__FILE__) . "/../sql/create-tables.sqlite.sql"));
-        Zizelo_Facade::setDefaultStorage(new Zizelo_Storage_Pdo($pdo));
-
-        $this->index = Zizelo_Facade::getIndex("things");
-
         $this->index->addDocument(1, "About a Silence in Literature");
         $this->index->addDocument(2, "A Feast for the Seaweeds");
         $this->index->addDocument(3, "Alice’s Adventures in Wonderland");
@@ -117,15 +109,6 @@ class Zizelo_Test {
         $this->index->addDocument(94, "Walt Disney");
     }
 
-    public function tearDown() {
-    }
-
-    protected function assert($condition) {
-        if (!$condition) {
-            throw new Zizelo_Test_Exception;
-        }
-    }
-
     public function testEmpty() {
         $matches = $this->index->search("Cheburashka");
         $this->assert(empty($matches));
@@ -196,10 +179,7 @@ class Zizelo_Test {
     }
 }
 
-class Zizelo_Test_Exception extends Exception {
-}
-
-$test = new Zizelo_Test();
+$test = new Zizelo_Test_Basic();
 $test->setUp();
 foreach (get_class_methods($test) as $method) {
     if (substr($method, 0, 4) == "test") {
@@ -210,4 +190,3 @@ foreach (get_class_methods($test) as $method) {
         }
     }
 }
-$test->tearDown();
