@@ -114,6 +114,7 @@ class Zizelo_Test {
         $this->index->addDocument(91, "Aaaa");
         $this->index->addDocument(92, "Oooo");
         $this->index->addDocument(93, "Ryunosuke Akutagawa");
+        $this->index->addDocument(94, "Walt Disney");
     }
 
     public function tearDown() {
@@ -190,6 +191,8 @@ class Zizelo_Test {
         $this->assert(in_array(48, $this->index->search("майн кампф")));
         $this->assert(in_array(80, $this->index->search("улисс")));
         $this->assert(in_array(76, $this->index->search("талия")));
+        $this->assert(in_array(94, $this->index->search("волт")));
+        $this->assert(in_array(94, $this->index->search("уолт")));
     }
 }
 
