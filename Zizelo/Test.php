@@ -1,7 +1,8 @@
 <?php
 abstract class Zizelo_Test {
-    protected $document_ids = array();
+    protected $documents = array();
     protected $search_index;
+    protected $query;
     protected $matches;
 
     public function __construct() {
@@ -14,44 +15,70 @@ abstract class Zizelo_Test {
     abstract public function setUp();
 
     protected function addDocument($text) {
-        $title = is_array($text) ? $text[0] : $text;
-        $id = count($this->document_ids) + 1;
-        $this->document_ids[$title] = $id;
+        $id = count($this->documents) + 1;
+        $this->documents []= array(
+            "id"    => $id,
+            "text"  => $text,
+            "title" => is_array($text) ? $text[0] : $text,
+        );
         $this->search_index->addDocument($id, $text);
     }
 
     protected function search($text) {
-        $this->matches = $this->search_index->search($text);
+        $this->query = $text;
+        $matches = $this->search_index->search($text);
+        $this->matches = array();
+        foreach ($this->documents as $document) {
+            if (in_array($document["id"], $matches)) {
+                $this->matches []= $document["title"];
+            }
+        }
     }
 
     protected function findNothing() {
         if (!empty($this->matches)) {
-            throw new Zizelo_Test_Exception("Must find nothing");
+            $this->fail("Must find nothing");
         }
     }
 
     protected function find($title) {
-        if (!in_array($this->getDocumentIdByTitle($title), $this->matches)) {
-            throw new Zizelo_Test_Exception("Must find '$title'");
+        if (!in_array($title, $this->matches)) {
+            $this->fail("Must find '$title'");
         }
     }
 
     protected function findOnly($title) {
-        if (array($this->getDocumentIdByTitle($title)) != $this->matches) {
-            throw new Zizelo_Test_Exception("Must find '$title' only");
+        if (array($title) != $this->matches) {
+            $this->fail("Must find '$title' only");
         }
     }
 
     protected function findNot($title) {
-        if (in_array($this->getDocumentIdByTitle($title), $this->matches)) {
-            throw new Zizelo_Test_Exception("Must not find '$title'");
+        if (in_array($title, $this->matches)) {
+            $this->fail("Must not find '$title'");
         }
     }
 
-    protected function getDocumentIdByTitle($title) {
-        return isset($this->document_ids[$title]) ? $this->document_ids[$title] : 0;
+    protected function fail($message) {
+        throw new Zizelo_Test_Exception($message, $this->query, $this->matches);
     }
 }
 
 class Zizelo_Test_Exception extends Exception {
+    protected $query;
+    protected $matches;
+
+    public function __construct($message, $query, array $matches) {
+        parent::__construct($message);
+        $this->query = $query;
+        $this->matches = $matches;
+    }
+
+    public function getQuery() {
+        return $this->query;
+    }
+
+    public function getMatches() {
+        return $this->matches;
+    }
 }
