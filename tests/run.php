@@ -111,6 +111,8 @@ class Zizelo_Test {
         $this->index->addDocument(88, "The Well of Loneliness");
         $this->index->addDocument(89, "Year 501: The Conquest Continues");
         $this->index->addDocument(90, "Zhuan Falun");
+        $this->index->addDocument(91, "Aaaa");
+        $this->index->addDocument(92, "Oooo");
     }
 
     public function tearDown() {
@@ -155,6 +157,20 @@ class Zizelo_Test {
     public function testBestMatchMultipleWords() {
         $matches = $this->index->search("A Message to Man and Humanity");
         $this->assert(array(50) == $matches);
+    }
+
+    public function testFrequentWords() {
+        $matches = $this->index->search("of the");
+        $this->assert(empty($matches));
+    }
+
+    public function testWordsWithEmptyHash() {
+        $matches = $this->index->search("aaaa");
+        $this->assert(in_array(91, $matches));
+        $this->assert(!in_array(92, $matches));
+        $matches = $this->index->search("oooo");
+        $this->assert(!in_array(91, $matches));
+        $this->assert(in_array(92, $matches));
     }
 }
 
