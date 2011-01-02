@@ -15,7 +15,7 @@ CREATE TABLE `zizelo_words`(
     `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     `text` VARCHAR(100) NOT NULL,
     `hash` VARCHAR(100) NOT NULL,
-    UNIQUE(`text`, `hash`)
+    UNIQUE(`text`)
 );
 
 CREATE INDEX `zizelo_words_hash` ON `zizelo_words`(`hash`);
