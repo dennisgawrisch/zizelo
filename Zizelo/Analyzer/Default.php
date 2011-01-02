@@ -60,16 +60,6 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
     }
 
     /**
-     * Is the word good for index?
-     * @param string $word
-     * @param string $hash
-     * @return boolean
-     */
-    protected function isGoodWord($word, $hash) {
-        return mb_strlen($hash) >= 2;
-    }
-
-    /**
      * Extract words from the text and calculate their hashes.
      * @param string $text
      * @return array associative arrays with string fields "text" and "hash"
@@ -82,13 +72,10 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
 
         $words = array();
         foreach ($words_strings as $word) {
-            $hash = $this->getHash($word);
-            if ($this->isGoodWord($word, $hash)) {
-                $words []= array(
-                    "text" => $word,
-                    "hash" => $hash,
-                );
-            }
+            $words []= array(
+                "text" => $word,
+                "hash" => $this->getHash($word),
+            );
         }
         return $words;
     }
