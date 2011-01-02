@@ -20,7 +20,7 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
     protected $similar_letters = array(
         "w" => "v", "u" => "v", "y" => "i", "j" => "i", "z" => "s", "x" => "ks", "c" => "k", "q" => "k",
     );
-    protected $meaningless_for_hash = "/[euioah]/";
+    protected $meaningless_for_hash = "/[euioahv]/";
 
     /*
      * Words with hyphens are treated in two ways simultaneously:
