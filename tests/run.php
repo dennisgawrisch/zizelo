@@ -131,33 +131,27 @@ class Zizelo_Test {
     }
 
     public function testFindSingleWord() {
-        $matches = $this->index->search("Watershed");
-        $this->assert(in_array(87, $matches));
+        $this->assert(in_array(87, $this->index->search("Watershed")));
     }
 
     public function testFindMultipleWords() {
-        $matches = $this->index->search("About a Silence in Literature");
-        $this->assert(in_array(1, $matches));
+        $this->assert(in_array(1, $this->index->search("About a Silence in Literature")));
     }
 
     public function testFindMultipleWordsBySingleWord() {
-        $matches = $this->index->search("Silence");
-        $this->assert(in_array(1, $matches));
+        $this->assert(in_array(1, $this->index->search("Silence")));
     }
 
     public function testMisorderedWords() {
-        $matches = $this->index->search("Literature Silence");
-        $this->assert(in_array(1, $matches));
+        $this->assert(in_array(1, $this->index->search("Literature Silence")));
     }
 
     public function testBestMatchSingleWord() {
-        $matches = $this->index->search("Watershed");
-        $this->assert(array(87) == $matches);
+        $this->assert(array(87) == $this->index->search("Watershed"));
     }
 
     public function testBestMatchMultipleWords() {
-        $matches = $this->index->search("A Message to Man and Humanity");
-        $this->assert(array(50) == $matches);
+        $this->assert(array(50) == $this->index->search("A Message to Man and Humanity"));
     }
 
     public function testFrequentWords() {
@@ -169,19 +163,33 @@ class Zizelo_Test {
         $matches = $this->index->search("aaaa");
         $this->assert(in_array(91, $matches));
         $this->assert(!in_array(92, $matches));
+
         $matches = $this->index->search("oooo");
         $this->assert(!in_array(91, $matches));
         $this->assert(in_array(92, $matches));
     }
 
     public function testLatinDiacritics() {
-        $matches = $this->index->search("senor");
-        $this->assert(array(26) == $matches);
+        $this->assert(in_array(26, $this->index->search("senor")));
     }
 
     public function testLetterU() {
-        $matches = $this->index->search("ryunoske");
-        $this->assert(array(93) == $matches);
+        $this->assert(in_array(93, $this->index->search("ryunoske")));
+    }
+
+    public function testFuzzySearch() {
+        $this->assert(in_array(15, $this->index->search("kandid")));
+        $this->assert(in_array(21, $this->index->search("diary of Anna Frank")));
+        $this->assert(in_array(80, $this->index->search("Uliss")));
+        $this->assert(in_array(47, $this->index->search("madam bouwari")));
+        $this->assert(in_array(48, $this->index->search("Mein Kammpf")));
+    }
+
+    public function testCyrillic() {
+        $this->assert(in_array(18, $this->index->search("да винчи")));
+        $this->assert(in_array(48, $this->index->search("майн кампф")));
+        $this->assert(in_array(80, $this->index->search("улисс")));
+        $this->assert(in_array(76, $this->index->search("талия")));
     }
 }
 
