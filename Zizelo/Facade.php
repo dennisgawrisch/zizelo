@@ -4,8 +4,6 @@ class Zizelo_Facade {
     const RELEVANCE_HASH    = 0.5;
     const RELEVANCE_MINIMAL = 0.3;
 
-    const FREQUENCY_MAX     = 0.01;
-
     private static $default_storage;
     private static $default_analyzer;
     private static $indexes = array();
@@ -108,14 +106,6 @@ class Zizelo_Facade {
         $words = $this->getAnalyzer()->extractWords($text);
         if (empty($words)) {
             return array();
-        }
-
-        $this->getStorage()->calculateWordsFrequency($words);
-
-        foreach ($words as $i => $word) {
-            if ($word["frequency"] > self::FREQUENCY_MAX) {
-                unset($words[$i]);
-            }
         }
 
         $documents = $this->getStorage()->findDocuments($this->getName(), $words);

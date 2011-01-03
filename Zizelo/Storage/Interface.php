@@ -26,14 +26,6 @@ interface Zizelo_Storage_Interface {
     public function addDocument($index_name, $document_id, array $words);
 
     /**
-     * Calculate frequency of each given word over the whole index.
-     * Float field "frequency" will be added to each word.
-     * @param array $words associative arrays with string fields "text" and "hash"
-     * @return Zizelo_Storage_Interface $this
-     */
-    public function calculateWordsFrequency(array &$words);
-
-    /**
      * Find documents containing the words matching at least some of the passed words by text and/or hash.
      * @param string $index_name
      * @param array $words associative arrays with string fields "text" and "hash"
