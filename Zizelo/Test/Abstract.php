@@ -1,5 +1,5 @@
 <?php
-abstract class Zizelo_Test {
+abstract class Zizelo_Test_Abstract {
     protected $documents = array();
     protected $search_index;
     protected $query;
@@ -7,7 +7,7 @@ abstract class Zizelo_Test {
 
     public function __construct() {
         $pdo = new PDO("sqlite::memory:");
-        $pdo->exec(file_get_contents(dirname(__FILE__) . "/../sql/create-tables.sqlite.sql"));
+        $pdo->exec(file_get_contents(dirname(__FILE__) . "/../../sql/create-tables.sqlite.sql"));
         Zizelo_Facade::setDefaultStorage(new Zizelo_Storage_Pdo($pdo));
         $this->search_index = Zizelo_Facade::getIndex("things");
     }
@@ -61,24 +61,5 @@ abstract class Zizelo_Test {
 
     protected function fail($message) {
         throw new Zizelo_Test_Exception($message, $this->query, $this->matches);
-    }
-}
-
-class Zizelo_Test_Exception extends Exception {
-    protected $query;
-    protected $matches;
-
-    public function __construct($message, $query, array $matches) {
-        parent::__construct($message);
-        $this->query = $query;
-        $this->matches = $matches;
-    }
-
-    public function getQuery() {
-        return $this->query;
-    }
-
-    public function getMatches() {
-        return $this->matches;
     }
 }
