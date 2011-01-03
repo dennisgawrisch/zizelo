@@ -890,4 +890,79 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
         $this->search("blablabla");
         $this->findNothing();
     }
+
+    public function testTrntn() {
+        $this->search("торнтина");
+        $this->find("Квентин Тарантино");
+        $this->find("Билли Боб Торнтон");
+
+        $this->search("тарантино");
+        $this->findOnly("Квентин Тарантино");
+
+        $this->search("торнтон");
+        $this->findOnly("Билли Боб Торнтон");
+    }
+
+    public function testMiyazaki() {
+        $this->search("миядзаки");
+        $this->find("Хаяо Миядзаки");
+        $this->find("Горо Миядзаки");
+
+        $this->search("хаяо миядзаки");
+        $this->findOnly("Хаяо Миядзаки");
+
+        $this->search("горо миядзаки");
+        $this->findOnly("Горо Миядзаки");
+    }
+
+    public function testDune() {
+        $this->search("dune");
+        $this->find("Дюна");
+        $this->find("Мессия Дюны");
+        $this->find("Дети Дюны");
+        $this->find("Бог-Император Дюны");
+        $this->find("Еретики Дюны");
+    }
+
+    public function testZauberberg() {
+        $this->search("zauberberg");
+        $this->findOnly("Волшебная гора");
+
+        $this->search("волшебная гора");
+        $this->findOnly("Волшебная гора");
+
+        $this->search("волшебную гору");
+        $this->find("Волшебная гора");
+    }
+
+    public function testAkutagawa() {
+        $this->search("рюноскэ акутагава");
+        $this->findOnly("Рюноскэ Акутагава");
+
+        $this->search("рюноскэ");
+        $this->find("Рюноскэ Акутагава");
+
+        $this->search("акутагава");
+        $this->find("Рюноскэ Акутагава");
+
+        $this->search("ryunosuke");
+        $this->find("Рюноскэ Акутагава");
+
+        $this->search("рюносуке");
+        $this->find("Рюноскэ Акутагава");
+    }
+
+    public function testCharlie() {
+        $this->search("чарли");
+        $this->find("Чарли и шоколадная фабрика");
+        $this->find("Чарли Кокс");
+        $this->find("Чарли Кауфман");
+    }
+
+    public function testEarthsea() {
+        $this->search("земноморье");
+        $this->find("Волшебник Земноморья");
+        $this->find("Сказания Земноморья");
+        $this->find("Похождения Геда");
+    }
 }
