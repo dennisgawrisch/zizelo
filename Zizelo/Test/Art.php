@@ -965,4 +965,9 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
         $this->find("Сказания Земноморья");
         $this->find("Похождения Геда");
     }
+
+    public function testOrwell() {
+        $this->search("George Orwell");
+        $this->findOnly("Джордж Оруэлл");
+    }
 }
