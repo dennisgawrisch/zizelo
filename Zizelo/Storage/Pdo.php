@@ -109,40 +109,6 @@ class Zizelo_Storage_Pdo implements Zizelo_Storage_Interface {
         return $this;
     }
 
-    public function calculateWordsFrequency(array &$words) {
-        foreach ($this->sqlQuery("SELECT COUNT(*) AS `total` FROM `zizelo_words_appearance`") as $row) {
-            $total_words_count = $row["total"];
-        }
-
-        $texts = array();
-        foreach ($words as $word) {
-            $texts []= $this->getConnection()->quote($word["text"]);
-        }
-        $texts = "(" . implode(", ", $texts) . ")";
-
-        foreach ($this->sqlQuery("
-            SELECT `text`, COUNT(`document_id`) AS `frequency`
-            FROM `zizelo_words`, `zizelo_words_appearance`
-            WHERE `zizelo_words`.`id` = `word_id`
-            AND `text` IN $texts
-            GROUP BY `word_id`
-        ") as $row) {
-            foreach ($words as &$word) {
-                if ($word["text"] == $row["text"]) {
-                    $word["frequency"] = $row["frequency"] / $total_words_count;
-                }
-            }
-        }
-
-        foreach ($words as &$word) {
-            if (!isset($word["frequency"])) {
-                $word["frequency"] = 0;
-            }
-        }
-
-        return $this;
-    }
-
     public function findDocuments($index_name, array $words) {
         $counts = array();
 
