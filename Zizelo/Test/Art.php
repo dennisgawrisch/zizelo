@@ -881,9 +881,9 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
         $this->addDocument(array('Ричард Морган', 'Richard K. Morgan', 'richard k morgan'));
         $this->addDocument(array('Говард Лавкрафт', 'H. P. Lovecraft', 'h p lovecraft'));
         $this->addDocument(array('Роман Полански', 'Roman Polanski', 'roman polanski'));
-        $this->addDocument(array('Коре Холт', 'Kåre Holt', 'kaare holt'));
         $this->addDocument(array('Рюхеи Мацуда', 'Ryuhei Matsuda', 'ryuhei matsuda'));
         $this->addDocument(array('Сосуке Такаока', '高岡蒼甫', 'sousuke takaoka'));
+        $this->addDocument('Kåre Holt');
     }
 
     public function testEmpty() {
@@ -997,5 +997,16 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
 
         $this->search("Жили-были");
         $this->find("Жили-были в Америке");
+    }
+
+    public function testLatinDiacritis() {
+        $this->search("Kåre Holt");
+        $this->findOnly("Kåre Holt");
+
+        $this->search("Kaare Holt");
+        $this->find("Kåre Holt");
+
+        $this->search("Kaare");
+        $this->find("Kåre Holt");
     }
 }
