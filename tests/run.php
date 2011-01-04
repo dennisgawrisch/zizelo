@@ -22,7 +22,11 @@ foreach (get_class_methods($test) as $method) {
             print "\t" . $exception->getMessage() . PHP_EOL;
             print "\t" . "Query: " . $exception->getQuery() . PHP_EOL;
             print "\t" . "Found:" . PHP_EOL;
-            foreach ($exception->getMatches() as $match) {
+            foreach ($exception->getMatches() as $i => $match) {
+                if ($i >= 5) {
+                    print "\t\t… and more (" . count($exception->getMatches()) . " total)" . PHP_EOL;
+                    break;
+                }
                 print "\t\t" . $match . PHP_EOL;
             }
         }
