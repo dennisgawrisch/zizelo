@@ -22,16 +22,6 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
     );
     protected $meaningless_for_hash = "/[euioahv]/";
 
-    /*
-     * Words with hyphens are treated in two ways simultaneously:
-     * “simple-minded” → “simple minded simpleminded”
-     * @param array $matches as described in preg_replace_callback
-     * @return string
-     */
-    public function handleHyphensCallback($matches) {
-        return str_replace("-", " ", $matches[0]) . " " . str_replace("-", "", $matches[0]);
-    }
-
     /**
      * Remove meaningless characters, leaving normalized words separated by single space.
      * @param string $text
@@ -40,7 +30,6 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
     protected function processText($text) {
         $text = mb_strtolower($text);
         $text = preg_replace($this->inword_punctuation, "", $text);
-        $text = preg_replace_callback("/\\S+\\-\\S+/", array($this, "handleHyphensCallback"), $text);
         $text = preg_replace($this->nonalphanum, " ", $text);
         $text = preg_replace("/\\s+/u", " ", trim($text));
         return $text;
