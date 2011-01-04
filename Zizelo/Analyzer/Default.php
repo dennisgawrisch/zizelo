@@ -1,6 +1,6 @@
 <?php
 class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
-    protected $nonalphanum = "/[^0-9a-zа-яёϧґєїіў]/u"; // TODO letters of all languages/scripts
+    protected $nonalphanum = "/\P{L}/u";
     protected $inword_punctuation = "/['’]/u";
 
     protected $translit = array(
