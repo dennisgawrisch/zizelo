@@ -913,6 +913,9 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
 
         $this->search("горо миядзаки");
         $this->findOnly("Горо Миядзаки");
+
+        $this->search("хаяо");
+        $this->findOnly("Хаяо Миядзаки");
     }
 
     public function testDune() {
