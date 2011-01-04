@@ -970,4 +970,21 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
         $this->search("George Orwell");
         $this->findOnly("Джордж Оруэлл");
     }
+
+    public function testFrequentWords() {
+        $this->search("a");
+        $this->findNothing();
+
+        $this->search("the");
+        $this->findNothing();
+
+        $this->search("and");
+        $this->findNothing();
+
+        $this->search("of");
+        $this->findNothing();
+
+        $this->search("в");
+        $this->findNothing();
+    }
 }
