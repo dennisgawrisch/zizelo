@@ -2,7 +2,6 @@
 class Zizelo_Facade {
     const RELEVANCE_TEXT    = 1.0;
     const RELEVANCE_HASH    = 0.5;
-    const RELEVANCE_MINIMAL = 0.3;
 
     private static $default_storage;
     private static $default_analyzer;
@@ -120,9 +119,7 @@ class Zizelo_Facade {
 
         foreach ($documents as $document_id => $document) {
             $relevance = ($document["text"] * self::RELEVANCE_TEXT + $document["hash"] * self::RELEVANCE_HASH) / count($words);
-            if ($relevance >= self::RELEVANCE_MINIMAL) {
-                $matches[$document_id] = $relevance;
-            }
+            $matches[$document_id] = $relevance;
             if ($relevance >= $perfect_match_relevance) {
                 $perfect_match_ids []= $document_id;
             }
