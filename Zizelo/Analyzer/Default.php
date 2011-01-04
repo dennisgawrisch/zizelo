@@ -13,9 +13,6 @@ class Zizelo_Analyzer_Default implements Zizelo_Analyzer_Interface {
 
         // Ukrainian
         "ґ" => "g", "є" => "ie", "і" => "i", "ї" => "i", "ϧ" => "o", "ў" => "w",
-
-        // TODO Japanese
-        // TODO Latin diacritics
     );
     protected $similar_letters = array(
         "w" => "v", "u" => "v", "y" => "i", "j" => "i", "z" => "s", "x" => "ks", "c" => "k", "q" => "k",
