@@ -990,4 +990,12 @@ class Zizelo_Test_Art extends Zizelo_Test_Abstract {
         $this->search("в");
         $this->findNothing();
     }
+
+    public function testHyphens() {
+        $this->search("Человек-ящик");
+        $this->find("Человек-ящик");
+
+        $this->search("Жили-были");
+        $this->find("Жили-были в Америке");
+    }
 }
