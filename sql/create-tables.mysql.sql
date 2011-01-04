@@ -13,8 +13,8 @@ CREATE TABLE `zizelo_documents`(
 
 CREATE TABLE `zizelo_words`(
     `id` INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `text` VARCHAR(100) NOT NULL,
-    `hash` VARCHAR(100) NOT NULL,
+    `text` VARCHAR(100) BINARY NOT NULL,
+    `hash` VARCHAR(100) BINARY NOT NULL,
     UNIQUE(`text`),
     INDEX(`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
