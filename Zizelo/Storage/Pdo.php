@@ -120,7 +120,7 @@ class Zizelo_Storage_Pdo implements Zizelo_Storage_Interface {
             $values = "(" . implode(", ", $values) . ")";
 
             $words_ids = array();
-            foreach ($this->sqlQuery("SELECT `id` FROM `zizelo_words` WHERE `$field` IN $values") as $row) {
+            foreach ($this->sqlQuery("SELECT `id` FROM `zizelo_words` WHERE `$field` IN $values LIMIT 100") as $row) {
                 $words_ids []= $row[0];
             }
             if (empty($words_ids)) {
@@ -131,7 +131,8 @@ class Zizelo_Storage_Pdo implements Zizelo_Storage_Interface {
             foreach ($this->sqlQuery("
                 SELECT `document_id`, COUNT(`word_id`) AS `count` FROM `zizelo_words_appearance`
                 WHERE `word_id` IN $words_ids
-                GROUP BY `document_id`;
+                GROUP BY `document_id`
+                LIMIT 1000
             ") as $row) {
                 if (!isset($counts[$row["document_id"]])) {
                     $counts[$row["document_id"]] = array(
